@@ -1,0 +1,4 @@
+.env
+ingestion/data/*
+logs/*
+airflow_dags/*

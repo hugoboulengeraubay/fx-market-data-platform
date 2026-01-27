@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: fx_market
+    database: FX_MARKET
+    schema: BRONZE
+    tables:
+      - name: fx_rates_raw
+        description: "Raw FX rates payload from Frankfurter API"

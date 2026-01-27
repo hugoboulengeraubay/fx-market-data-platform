@@ -1,0 +1,16 @@
+version: 2
+  
+models:
+  - name: fx_rates_silver
+    description: "Daily FX rates normalized from raw payloads"
+    columns:
+      - name: fx_rate_id
+        tests:
+          - not_null
+          - unique
+      - name: rate_date
+        tests:
+          - not_null
+      - name: currency
+        tests:
+          - not_null
