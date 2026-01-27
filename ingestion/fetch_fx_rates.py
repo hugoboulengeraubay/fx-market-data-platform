@@ -6,7 +6,7 @@ import os
 import hashlib
 import pandas as pd
 
-from snowflake_client import get_connection
+from ingestion.snowflake_client import get_connection
 
 BASE_CURRENCY = "EUR"
 TARGET_CURRENCIES = ["USD", "JPY", "GBP"]

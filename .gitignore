@@ -2,3 +2,14 @@
 ingestion/data/*
 logs/*
 airflow_dags/*
+# Airflow
+airflow/airflow.db
+airflow/airflow.cfg
+airflow/logs/
+airflow/tmp/
+airflow/simple_auth_manager_passwords.json.generated
+# Python
+__pycache__/
+*.pyc
+# Env
+.venv/
