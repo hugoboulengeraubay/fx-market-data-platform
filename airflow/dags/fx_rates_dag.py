@@ -71,6 +71,11 @@ with DAG(
         bash_command="cd /workspaces/fx-market-data-platform/fx_market && dbt run --select gold_fx_volatility",
     )
 
+    gold_timeseries_task = BashOperator(
+        task_id="run_gold_timeseries",
+        bash_command="cd /workspaces/fx-market-data-platform/fx_market && dbt run --select gold_timeseries_30d",
+    )
+
     gold_test_daily_task = BashOperator(
         task_id="run_test_daily_gold",
         bash_command="cd /workspaces/fx-market-data-platform/fx_market && dbt test --select gold_fx_daily",
@@ -90,7 +95,7 @@ with DAG(
     ingest_bronze >> silver_task
     silver_task >> [silver_dbt_tests_task, silver_test_freshness_task, silver_test_positive_task]
     [silver_dbt_tests_task, silver_test_positive_task] >> silver_tests_done
-    silver_tests_done >> [gold_daily_task, gold_min_max_task, gold_volatility_task]
+    silver_tests_done >> [gold_daily_task, gold_min_max_task, gold_volatility_task, gold_timeseries_task]
     gold_daily_task >> gold_test_daily_task
     gold_min_max_task >> gold_test_min_max_task
     gold_volatility_task >> gold_test_volatility_task

@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from snowflake_connection import get_connection
+import altair as alt
 
 st.set_page_config(page_title="FX Dashboard", layout="centered")
 
@@ -74,3 +75,34 @@ st.metric(
 )
 
 st.caption(f"Dernière mise à jour : {daily.loc[0, 'RATE_DATE']}")
+
+ts_query = f"""
+SELECT rate_date, rate
+FROM GOLD_TIMESERIES_30D
+WHERE currency = '{currency}'
+ORDER BY rate_date
+"""
+
+ts = pd.read_sql(ts_query, conn) 
+
+min_rate = ts["RATE"].min()
+max_rate = ts["RATE"].max()
+
+chart = (
+    alt.Chart(ts)
+    .mark_line()
+    .encode(
+        x="RATE_DATE:T",
+        y=alt.Y(
+            "RATE:Q",
+            scale=alt.Scale(
+                domain=[min_rate * 0.995, max_rate * 1.005]
+            )
+        ),
+        tooltip=["RATE_DATE:T", "RATE:Q"]
+    )
+)
+
+st.altair_chart(chart, use_container_width=True)
+
+
