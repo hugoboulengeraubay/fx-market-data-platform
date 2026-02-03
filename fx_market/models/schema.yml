@@ -14,3 +14,46 @@ models:
       - name: currency
         tests:
           - not_null
+          - accepted_values:
+              values: ["USD", "GBP", "JPY"]
+      - name: rate
+        tests:
+          - not_null
+  
+  - name: gold_fx_daily
+    description: "Dernier taux par devise"
+    columns:
+      - name: rate_date
+        tests:
+          - not_null
+      - name: rate
+        tests:
+          - not_null
+      - name: variation_pct
+        tests:
+          - not_null
+
+  - name: gold_fx_min_max
+    description: "Min et Max sur 30 jours"
+    columns:
+      - name: min_rate
+        tests:
+          - not_null
+      - name: max_rate
+        tests:
+          - not_null
+      - name: currency
+        tests:
+          - not_null
+          - unique
+
+  - name: gold_fx_volatility
+    description: "Volatilité sur 7 derniers jours"
+    columns:
+      - name: volatility_7d
+        tests:
+          - not_null
+      - name: currency
+        tests:
+          - not_null
+          - unique

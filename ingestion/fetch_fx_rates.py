@@ -94,14 +94,7 @@ def insert_if_not_exists(payload: dict):
 
     cur.close()
     conn.close()
-
-
-def main():
-    url = build_url(BASE_CURRENCY, TARGET_CURRENCIES)
-    data, code = fetch_rates(url)
-    save_raw_json(data)
-    df = json_to_pandas(data)
-    save_silver_df(df)
+    
 
 if __name__ == "__main__":
     url = build_url(BASE_CURRENCY, TARGET_CURRENCIES)
