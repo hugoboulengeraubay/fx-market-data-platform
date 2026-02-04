@@ -19,19 +19,10 @@ with silver_base as (
         ingestion_ts
     from {{ source('fx_market', 'fx_rates_raw') }},
          lateral flatten(input => raw_payload:"rates") rates
-    {% if is_incremental() %}
-        where rate_date > (select max(rate_date) from {{ this }})
-    {% endif %}
-),
-
-silver_with_lag as (
-    select
-        *,
-        lag(rate) over (partition by currency order by rate_date) as rate_prev
-    from silver_base
 )
+select *
+from silver_base
+{% if is_incremental() %}
+where rate_date > (select max(rate_date) from {{ this }})
+{% endif %}
 
-select
-    *,
-    coalesce((rate - rate_prev) * 100 / rate_prev, 0) as variation_pct
-from silver_with_lag
